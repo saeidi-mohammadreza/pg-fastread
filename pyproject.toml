@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pg-fastread"
+version = "0.1.0"
+description = "Read millions of PostgreSQL rows into NumPy arrays through one packed bytea"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Mohammadreza Saeidi" }]
+dependencies = ["numpy>=1.24"]
+keywords = ["postgresql", "numpy", "performance", "bytea", "time-series"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Database",
+  "Topic :: Scientific/Engineering",
+]
+
+[project.optional-dependencies]
+pg = ["psycopg[binary]>=3.1"]
+dev = ["psycopg[binary]>=3.1", "pytest>=7", "pandas>=2"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
