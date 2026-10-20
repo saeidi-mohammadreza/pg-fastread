@@ -29,7 +29,7 @@ def conn():
         )
         c.execute(
             "INSERT INTO pgfr_ticks SELECT g, timestamptz '2026-01-01 09:00+00' + g * interval '137 ms', "
-            "100 + sin(g / 1000.0) * 5, (g * 37) % 1000 + 1, g % 2 = 0 FROM generate_series(1, %s) g",
+            "100 + sin(g / 1000.0) * 5, (g * 37) %% 1000 + 1, g %% 2 = 0 FROM generate_series(1, %s) g",
             (N,),
         )
         c.execute("UPDATE pgfr_ticks SET price = NULL WHERE id = 777")
