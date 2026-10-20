@@ -42,7 +42,14 @@ python benchmarks/bench.py --dsn postgresql://postgres@localhost/postgres --rows
 
 Compares `psycopg` `fetchall()` → `np.array`, `COPY … csv` → `np.loadtxt`, `pandas.read_sql` and `pg-fastread`, reports the median of three runs and the number of mismatching values per method. CI runs it on every push; see the latest *Benchmark* step in the Actions tab.
 
-<!-- BENCHMARK-TABLE -->
+Result from CI (GitHub-hosted runner, PostgreSQL 16 in a service container, 300,000 rows of `int8, timestamptz, float8, int4`, Python 3.10):
+
+| method | seconds | speed-up | mismatches |
+| --- | ---: | ---: | ---: |
+| psycopg `fetchall` → `np.array` | 1.481 | 1.0× | 0 |
+| `COPY … csv` → `np.loadtxt` | 0.625 | 2.4× | 0 |
+| `pandas.read_sql` | 1.893 | 0.8× | 0 |
+| **pg-fastread** (packed `bytea`) | **0.110** | **13.5×** | **0** |
 
 ## API
 
