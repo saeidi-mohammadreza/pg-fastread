@@ -30,7 +30,7 @@ def setup(conn, rows: int) -> None:
     )
     conn.execute(
         f"INSERT INTO {TABLE} SELECT g, timestamptz '2026-01-01 09:00+00' + g * interval '137 ms', "
-        "100 + sin(g / 1000.0) * 5 + (g % 7) * 0.01, (g * 37) % 1000 + 1 "
+        "100 + sin(g / 1000.0) * 5 + (g %% 7) * 0.01, (g * 37) %% 1000 + 1 "
         "FROM generate_series(1, %s) g",
         (rows,),
     )
