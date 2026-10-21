@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="236" viewBox="0 0 720 236" role="img" aria-labelledby="t d">
+  <title id="t">pg-fastread benchmark</title>
+  <desc id="d">Seconds to load 300,000 PostgreSQL rows into NumPy arrays (median of 3, GitHub Actions, PostgreSQL 16): pandas.read_sql 1.893 s, psycopg fetchall 1.481 s, COPY csv with np.loadtxt 0.625 s, pg-fastread 0.110 s. All methods return identical values.</desc>
+  <style>
+    .lbl { font: 13px -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2328; }
+    .val { font: 600 13px -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2328; }
+    .sub { font: 12px -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: #59636e; }
+    .base { fill: #b6bec8; }
+    .hero { fill: #2f6fdd; }
+    .axis { stroke: #d1d9e0; stroke-width: 1; }
+    @media (prefers-color-scheme: dark) {
+      .lbl, .val { fill: #e6edf3; }
+      .sub { fill: #9198a1; }
+      .base { fill: #4b535d; }
+      .hero { fill: #4c8dff; }
+      .axis { stroke: #3d444d; }
+    }
+  </style>
+  <text class="sub" x="0" y="16">Seconds to load 300,000 rows into NumPy (lower is better) · median of 3 · GitHub Actions, PostgreSQL 16</text>
+  <line class="axis" x1="210" y1="34" x2="210" y2="210"/>
+  <text class="lbl" x="200" y="62" text-anchor="end">pandas.read_sql</text>
+  <rect class="base" x="210" y="46" width="420" height="24" rx="3"/>
+  <text class="val" x="638" y="63">1.893 s</text>
+  <text class="lbl" x="200" y="104" text-anchor="end">psycopg fetchall → np.array</text>
+  <rect class="base" x="210" y="88" width="329" height="24" rx="3"/>
+  <text class="val" x="547" y="105">1.481 s</text>
+  <text class="lbl" x="200" y="146" text-anchor="end">COPY csv → np.loadtxt</text>
+  <rect class="base" x="210" y="130" width="139" height="24" rx="3"/>
+  <text class="val" x="357" y="147">0.625 s</text>
+  <text class="lbl" x="200" y="188" text-anchor="end">pg-fastread</text>
+  <rect class="hero" x="210" y="172" width="24" height="24" rx="3"/>
+  <text class="val" x="242" y="189">0.110 s · 13.5× faster than fetchall · 0 mismatches</text>
+  <text class="sub" x="0" y="230">Every method's output is compared value by value with the row fetch before its time is reported.</text>
+</svg>
