@@ -77,3 +77,14 @@ def test_chunked_equals_single_read(conn):
 def test_empty_result(conn):
     out = fetch_arrays(conn, "pgfr_ticks", COLS, where="id < 0")
     assert all(len(v) == 0 for v in out.values())
+
+
+def test_infinite_timestamps_come_back_as_nat(conn):
+    conn.execute("CREATE TEMP TABLE pgfr_inf (ts timestamptz NOT NULL)")
+    try:
+        conn.execute("INSERT INTO pgfr_inf VALUES ('-infinity'), ('2026-01-01 00:00+00'), ('infinity')")
+        out = fetch_arrays(conn, "pgfr_inf", {"ts": "timestamptz"}, order_by="ts")
+        assert np.isnat(out["ts"][0]) and np.isnat(out["ts"][2])
+        assert out["ts"][1] == np.datetime64("2026-01-01T00:00:00", "us")
+    finally:
+        conn.execute("DROP TABLE pgfr_inf")
