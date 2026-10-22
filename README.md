@@ -27,7 +27,7 @@ a["price"]   # float64 ndarray, native byte order, contiguous
 a["ts"]      # datetime64[us]
 ```
 
-## Exact, not approximately right
+## Results are exact
 
 Speed-ups that change the numbers are bugs. Every value is the server's own binary representation, reinterpreted, so results are **bit-identical** to a row-by-row fetch, including NaN payloads and microsecond timestamps. The integration tests assert this against a real PostgreSQL on every push, and the benchmark refuses to print a time for any method whose output differs from the baseline.
 
@@ -62,7 +62,7 @@ Result from CI (GitHub-hosted runner, PostgreSQL 16 in a service container, 300,
 | `build_query(...)` / `decode(buf, columns)` | the two halves, for use with any driver |
 | `Column(name, pg_type, expr=)` | a computed column, e.g. `Column("mid", "float8", expr="(bid + ask) / 2")` |
 
-Supported types: `int2`, `int4`, `int8`, `float4`, `float8`, `bool`, `timestamp`, `timestamptz` (common aliases such as `bigint` and `double precision` work).
+Supported types: `int2`, `int4`, `int8`, `float4`, `float8`, `bool`, `timestamp`, `timestamptz` (common aliases such as `bigint` and `double precision` work). Timestamps of `infinity` and `-infinity` come back as NaT.
 
 ## When to use it, and when not
 
@@ -77,4 +77,4 @@ pytest tests/test_decode.py                       # no database needed
 PG_FASTREAD_DSN=postgresql://postgres@localhost/postgres pytest   # + end-to-end
 ```
 
-MIT licence. Author: Mohammadreza Saeidi, who used the same technique to make tick reads in a production backtester 31–37× faster with zero mismatches; this is a clean-room, generic implementation.
+MIT licence. I wrote this after using the same trick to make tick reads in a production backtester 31–37× faster with zero mismatches. This is a clean-room, generic version and contains no employer code.
