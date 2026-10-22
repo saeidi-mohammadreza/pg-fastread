@@ -52,6 +52,14 @@ def test_negative_infinity_timestamp_becomes_nat():
     assert np.isnat(out["ts"][0])
 
 
+def test_positive_infinity_timestamp_becomes_nat():
+    # 'infinity' is int64 max on the wire; adding the epoch offset used to wrap around
+    buf = pack([(np.iinfo(np.int64).max,), (0,)], "q")
+    out = decode(buf, {"ts": "timestamptz"})
+    assert np.isnat(out["ts"][0])
+    assert out["ts"][1] == np.datetime64("2000-01-01T00:00:00", "us")
+
+
 def test_empty_buffer_gives_empty_arrays():
     out = decode(b"", {"a": "int8", "b": "float8"})
     assert out["a"].shape == (0,) and out["b"].dtype == np.float64
