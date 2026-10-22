@@ -170,9 +170,11 @@ def decode(buf: bytes | bytearray | memoryview, columns: Mapping[str, str] | Seq
         raw = rec[c.name]
         if c.pg_type in ("timestamp", "timestamptz"):
             us = raw.astype(np.int64)
-            # keep -infinity (int64 min) as NaT instead of overflowing
-            nat = us == np.iinfo(np.int64).min
-            us = np.where(nat, np.iinfo(np.int64).min, us + _PG_EPOCH_US)
+            # -infinity and infinity arrive as int64 min and max. Both become NaT;
+            # shifting them to the Unix epoch would overflow.
+            big = np.iinfo(np.int64)
+            inf = (us == big.min) | (us == big.max)
+            us = np.where(inf, big.min, us + _PG_EPOCH_US)
             out[c.name] = us.view("datetime64[us]")
         elif c.pg_type == "bool":
             out[c.name] = raw.astype(bool)
